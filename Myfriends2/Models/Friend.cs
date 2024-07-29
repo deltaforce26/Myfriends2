@@ -12,32 +12,35 @@ namespace Myfriends2.Models
         [Key]
         public int Id { get; set; }
 
-        [Display(Name = "שם פרטי")] // תווית לשדה בתצוגה
+        [Display(Name = "שם פרטי")] 
         public string FirstName { get; set; } = "";
 
         [Display(Name = "שם משפחה")]
         public string? LastName { get; set; }
 
-        [Display(Name = "שם מלא"), NotMapped] // שדה שאינו נשמר בטבלה
+        [Display(Name = "שם מלא"), NotMapped] 
         public string FullName { get { if (LastName != null) return FirstName + " " + LastName; return FirstName; } }
 
         [EmailAddress(ErrorMessage = "שדה אינו תקין - אימייל נדרש")]
         public string? Email { get; set; }
         [Phone, Display(Name = "מספר טלפון")]
         public string Phone { get; set; }
-
         public List<Image> Images { get; set; }
 
 
 
         [Display(Name = "הוספת תמונה"), NotMapped]
-        public IFormFile? SetImage
+        public IFormFile[]? SetImage
         {
             get { return null; }
             set
             {
                 if (value == null) return;
-                AddImage(value);
+                foreach (var image in value)
+                {
+                    AddImage(image);
+                }
+                
             }
         }
 
@@ -45,7 +48,7 @@ namespace Myfriends2.Models
         {
             if (file == null) return;
 
-            // יצירת מקום בזיכרון במכיל קובץ
+            // יצירת מקום בזיכרון המכיל קובץ
             MemoryStream stream = new MemoryStream();
             // העתקת הקובץ למקום בזיכרון
             file.CopyTo(stream);

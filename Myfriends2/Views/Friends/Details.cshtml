@@ -38,16 +38,31 @@
         </dd>
     </dl>
 </div>
-<div>
-    @foreach (var item in Model.Images)
-    {
-        <img src="data:image/png;base64,@Convert.ToBase64String(item.MyImage)" />
-    }
-    
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        @{
+            var first = true;
+        }
+        @foreach (var item in Model.Images)
+        {
+            <div class="carousel-item @(first?Html.Raw("active"):Html.Raw(""))">
+                <img class="d-block w-100" src="data:image/png;base64,@Convert.ToBase64String(item.MyImage)">
+            </div>
+            first = false;
+        }
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
+       data-slide="prev" style="color: black">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only"></span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleControls" role="button"
+       data-slide="next" style="color: black">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only"></span>
+    </a>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
-    
-    
 </div>
